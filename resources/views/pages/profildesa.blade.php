@@ -155,6 +155,307 @@
         </div>
     </section>
 
+    <!-- Demographics & APBDes Budget Transparency Section -->
+    <section class="py-12 px-4 max-w-7xl mx-auto fade-in" x-data="{ activeTab: 'demografi' }">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-blue-100 pb-4">
+            <h2 class="text-3xl font-bold text-blue-900 relative">
+                Data & Transparansi Desa
+                <span class="absolute bottom-[-8px] left-0 w-24 h-1 bg-blue-600 rounded-full"></span>
+            </h2>
+            <div class="flex space-x-2 mt-4 md:mt-0">
+                <button 
+                    @click="activeTab = 'demografi'"
+                    :class="activeTab === 'demografi' ? 'bg-blue-900 text-white' : 'bg-white text-blue-900 border border-blue-200 hover:bg-blue-50'"
+                    class="px-5 py-2.5 rounded-lg font-semibold transition text-sm flex items-center shadow-sm">
+                    <i data-feather="users" class="w-4 h-4 mr-2"></i> Statistik Kependudukan
+                </button>
+                <button 
+                    @click="activeTab = 'apbdes'"
+                    :class="activeTab === 'apbdes' ? 'bg-blue-900 text-white' : 'bg-white text-blue-900 border border-blue-200 hover:bg-blue-50'"
+                    class="px-5 py-2.5 rounded-lg font-semibold transition text-sm flex items-center shadow-sm">
+                    <i data-feather="dollar-sign" class="w-4 h-4 mr-2"></i> Transparansi APBDes
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content: Demografi -->
+        <div x-show="activeTab === 'demografi'" x-transition.opacity class="bg-white rounded-xl shadow-lg border border-blue-100 p-6 md:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Gender & Usia -->
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                            <span class="w-2 h-6 bg-blue-600 rounded-full mr-2"></span> Berdasarkan Jenis Kelamin
+                        </h3>
+                        <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl" style="height: 280px; position: relative;">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                            <span class="w-2 h-6 bg-blue-600 rounded-full mr-2"></span> Rentang Usia
+                        </h3>
+                        <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl" style="height: 280px; position: relative;">
+                            <canvas id="usiaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pekerjaan & Pendidikan -->
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                            <span class="w-2 h-6 bg-blue-600 rounded-full mr-2"></span> Mata Pencaharian
+                        </h3>
+                        <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl" style="height: 280px; position: relative;">
+                            <canvas id="pekerjaanChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                            <span class="w-2 h-6 bg-blue-600 rounded-full mr-2"></span> Tingkat Pendidikan
+                        </h3>
+                        <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl" style="height: 280px; position: relative;">
+                            <canvas id="pendidikanChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: APBDes -->
+        <div x-show="activeTab === 'apbdes'" x-transition.opacity class="bg-white rounded-xl shadow-lg border border-blue-100 p-6 md:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Summary & Chart -->
+                <div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                        <span class="w-2 h-6 bg-blue-600 rounded-full mr-2"></span> Perbandingan Anggaran
+                    </h3>
+                    <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl mb-6" style="height: 300px; position: relative;">
+                        <canvas id="apbdesComparisonChart"></canvas>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-green-50 border border-green-150 p-4 rounded-xl">
+                            <p class="text-xs text-green-700 font-semibold uppercase tracking-wider">Total Pendapatan</p>
+                            <p class="text-2xl font-extrabold text-green-900 mt-1">Rp {{ number_format($budgets->where('type', 'pendapatan')->sum('amount'), 0, ',', '.') }}</p>
+                        </div>
+                        <div class="bg-red-50 border border-red-150 p-4 rounded-xl">
+                            <p class="text-xs text-red-700 font-semibold uppercase tracking-wider">Total Belanja</p>
+                            <p class="text-2xl font-extrabold text-red-900 mt-1">Rp {{ number_format($budgets->where('type', 'belanja')->sum('amount'), 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Breakdown -->
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-bold text-green-900 mb-3 flex items-center">
+                            <i data-feather="trending-up" class="w-5 h-5 text-green-600 mr-2"></i> Rincian Pendapatan (2026)
+                        </h4>
+                        <div class="space-y-4">
+                            @forelse($budgets->where('type', 'pendapatan') as $item)
+                                <div>
+                                    <div class="flex justify-between text-sm font-semibold text-gray-700 mb-1">
+                                        <span>{{ $item->category }}</span>
+                                        <span>Rp {{ number_format($item->amount, 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                        @php
+                                            $totalP = $budgets->where('type', 'pendapatan')->sum('amount');
+                                            $pctP = $totalP > 0 ? ($item->amount / $totalP) * 100 : 0;
+                                        @endphp
+                                        <div class="bg-green-500 h-full rounded-full" style="width: {{ $pctP }}%"></div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-sm text-gray-500 italic">Data pendapatan belum tersedia.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-150 pt-6">
+                        <h4 class="text-lg font-bold text-red-900 mb-3 flex items-center">
+                            <i data-feather="trending-down" class="w-5 h-5 text-red-600 mr-2"></i> Rincian Belanja (2026)
+                        </h4>
+                        <div class="space-y-4">
+                            @forelse($budgets->where('type', 'belanja') as $item)
+                                <div>
+                                    <div class="flex justify-between text-sm font-semibold text-gray-700 mb-1">
+                                        <span>{{ $item->category }}</span>
+                                        <span>Rp {{ number_format($item->amount, 0, ',', '.') }}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                        @php
+                                            $totalB = $budgets->where('type', 'belanja')->sum('amount');
+                                            $pctB = $totalB > 0 ? ($item->amount / $totalB) * 100 : 0;
+                                        @endphp
+                                        <div class="bg-red-500 h-full rounded-full" style="width: {{ $pctB }}%"></div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-sm text-gray-500 italic">Data belanja belum tersedia.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Helper to check charts
+        const initCharts = () => {
+            // 1. Gender Chart
+            const genderData = @json($demographics->where('category', 'gender')->values());
+            if (genderData.length && document.getElementById('genderChart')) {
+                new Chart(document.getElementById('genderChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: genderData.map(d => d.label),
+                        datasets: [{
+                            data: genderData.map(d => d.value),
+                            backgroundColor: ['#3b82f6', '#ec4899'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+
+            // 2. Usia Chart
+            const usiaData = @json($demographics->where('category', 'usia')->values());
+            if (usiaData.length && document.getElementById('usiaChart')) {
+                new Chart(document.getElementById('usiaChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: usiaData.map(d => d.label),
+                        datasets: [{
+                            label: 'Jumlah Penduduk',
+                            data: usiaData.map(d => d.value),
+                            backgroundColor: '#f59e0b',
+                            borderWidth: 0,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // 3. Pekerjaan Chart
+            const pekerjaanData = @json($demographics->where('category', 'pekerjaan')->values());
+            if (pekerjaanData.length && document.getElementById('pekerjaanChart')) {
+                new Chart(document.getElementById('pekerjaanChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: pekerjaanData.map(d => d.label),
+                        datasets: [{
+                            label: 'Jumlah Orang',
+                            data: pekerjaanData.map(d => d.value),
+                            backgroundColor: '#10b981',
+                            borderWidth: 0,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: { beginAtZero: true }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // 4. Pendidikan Chart
+            const pendidikanData = @json($demographics->where('category', 'pendidikan')->values());
+            if (pendidikanData.length && document.getElementById('pendidikanChart')) {
+                new Chart(document.getElementById('pendidikanChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: pendidikanData.map(d => d.label),
+                        datasets: [{
+                            data: pendidikanData.map(d => d.value),
+                            backgroundColor: ['#6366f1', '#a855f7', '#ec4899', '#f43f5e', '#ef4444'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+
+            // 5. APBDes Comparison Chart
+            const totalPendapatan = {{ $budgets->where('type', 'pendapatan')->sum('amount') ?? 0 }};
+            const totalBelanja = {{ $budgets->where('type', 'belanja')->sum('amount') ?? 0 }};
+            if ((totalPendapatan > 0 || totalBelanja > 0) && document.getElementById('apbdesComparisonChart')) {
+                new Chart(document.getElementById('apbdesComparisonChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pendapatan', 'Belanja'],
+                        datasets: [{
+                            data: [totalPendapatan, totalBelanja],
+                            backgroundColor: ['#10b981', '#ef4444'],
+                            borderWidth: 0,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'Total: Rp ' + context.raw.toLocaleString('id-ID');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        initCharts();
+    });
+    </script>
+
     <!-- Struktur Organisasi Desa Section -->
     <section class="py-16 px-4 max-w-7xl mx-auto">
         <h2 class="center text-3xl font-bold text-blue-900 mb-12 text-center relative">

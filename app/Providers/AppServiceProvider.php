@@ -21,10 +21,29 @@ class AppServiceProvider extends ServiceProvider
     {
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
             $setting = null;
+            $demographics = collect();
+            $budgets = collect();
+            $events = collect();
+
             if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
                 $setting = \App\Models\Setting::first();
             }
-            $view->with('setting', $setting);
+            if (\Illuminate\Support\Facades\Schema::hasTable('demographics')) {
+                $demographics = \App\Models\Demographic::all();
+            }
+            if (\Illuminate\Support\Facades\Schema::hasTable('budgets')) {
+                $budgets = \App\Models\Budget::all();
+            }
+            if (\Illuminate\Support\Facades\Schema::hasTable('events')) {
+                $events = \App\Models\Event::orderBy('date', 'asc')->get();
+            }
+
+            $view->with([
+                'setting' => $setting,
+                'demographics' => $demographics,
+                'budgets' => $budgets,
+                'events' => $events,
+            ]);
         });
     }
 }

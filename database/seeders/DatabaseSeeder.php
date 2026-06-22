@@ -72,5 +72,75 @@ class DatabaseSeeder extends Seeder
                 'photo' => null,
             ]);
         }
+
+        // Seed demographics
+        \App\Models\Demographic::query()->delete();
+        $demographics = [
+            // Pekerjaan
+            ['category' => 'pekerjaan', 'label' => 'Petani/Pekebun', 'value' => 982],
+            ['category' => 'pekerjaan', 'label' => 'Wiraswasta', 'value' => 145],
+            ['category' => 'pekerjaan', 'label' => 'PNS/TNI/Polri', 'value' => 38],
+            ['category' => 'pekerjaan', 'label' => 'Buruh Harian', 'value' => 112],
+            ['category' => 'pekerjaan', 'label' => 'Belum Bekerja', 'value' => 259],
+            // Pendidikan
+            ['category' => 'pendidikan', 'label' => 'Tidak Sekolah', 'value' => 120],
+            ['category' => 'pendidikan', 'label' => 'Tamat SD', 'value' => 610],
+            ['category' => 'pendidikan', 'label' => 'Tamat SMP', 'value' => 420],
+            ['category' => 'pendidikan', 'label' => 'Tamat SMA/SMK', 'value' => 312],
+            ['category' => 'pendidikan', 'label' => 'Tamat PT/Sarjana', 'value' => 74],
+            // Usia
+            ['category' => 'usia', 'label' => '0-5 Tahun (Balita)', 'value' => 145],
+            ['category' => 'usia', 'label' => '6-12 Tahun (Anak)', 'value' => 280],
+            ['category' => 'usia', 'label' => '13-18 Tahun (Remaja)', 'value' => 310],
+            ['category' => 'usia', 'label' => '19-59 Tahun (Dewasa)', 'value' => 625],
+            ['category' => 'usia', 'label' => '60+ Tahun (Lansia)', 'value' => 176],
+            // Gender
+            ['category' => 'gender', 'label' => 'Laki-laki', 'value' => 782],
+            ['category' => 'gender', 'label' => 'Perempuan', 'value' => 754],
+        ];
+        foreach ($demographics as $demo) {
+            \App\Models\Demographic::create($demo);
+        }
+
+        // Seed Budgets APBDes
+        \App\Models\Budget::query()->delete();
+        $budgets = [
+            // Pendapatan
+            ['year' => 2026, 'type' => 'pendapatan', 'category' => 'Dana Desa (DD)', 'amount' => 1250000000.00],
+            ['year' => 2026, 'type' => 'pendapatan', 'category' => 'Alokasi Dana Desa (ADD)', 'amount' => 420000000.00],
+            ['year' => 2026, 'type' => 'pendapatan', 'category' => 'Bagi Hasil Pajak & Retribusi', 'amount' => 35000000.00],
+            ['year' => 2026, 'type' => 'pendapatan', 'category' => 'Pendapatan Asli Desa (PADes)', 'amount' => 15000000.00],
+            // Belanja
+            ['year' => 2026, 'type' => 'belanja', 'category' => 'Penyelenggaraan Pemerintahan Desa', 'amount' => 580000000.00],
+            ['year' => 2026, 'type' => 'belanja', 'category' => 'Pembangunan Sarana & Prasarana', 'amount' => 720000000.00],
+            ['year' => 2026, 'type' => 'belanja', 'category' => 'Pembinaan Kemasyarakatan', 'amount' => 180000000.00],
+            ['year' => 2026, 'type' => 'belanja', 'category' => 'Pemberdayaan Masyarakat', 'amount' => 240000000.00],
+        ];
+        foreach ($budgets as $budget) {
+            \App\Models\Budget::create($budget);
+        }
+
+        // Seed Events
+        \App\Models\Event::query()->delete();
+        $events = [
+            ['title' => 'Posyandu Lansia & Balita Sehat', 'description' => 'Pemeriksaan kesehatan rutin bulanan, imunisasi balita, dan pembagian makanan tambahan (PMT) di Balai Desa.', 'date' => date('Y-m-d', strtotime('+3 days')), 'time' => '08:30:00', 'location' => 'Balai Pertemuan Desa Katiku Wai'],
+            ['title' => 'Musyawarah Dusun (Musdus)', 'description' => 'Musyawarah dusun untuk menyusun usulan pembangunan prioritas tingkat dusun tahun anggaran mendatang.', 'date' => date('Y-m-d', strtotime('+7 days')), 'time' => '10:00:00', 'location' => 'Kantor Kepala Dusun II'],
+            ['title' => 'Kerja Bakti Bersama Bersihkan Saluran Air', 'description' => 'Kerja bakti gotong royong membersihkan saluran air dan drainase desa dalam rangka mengantisipasi musim hujan.', 'date' => date('Y-m-d', strtotime('+12 days')), 'time' => '07:00:00', 'location' => 'Lingkungan RT 04 Dusun I'],
+        ];
+        foreach ($events as $event) {
+            \App\Models\Event::create($event);
+        }
+
+        // Seed FAQs
+        \App\Models\Faq::query()->delete();
+        $faqs = [
+            ['question' => 'Bagaimana cara mengajukan Surat Keterangan Tidak Mampu (SKTM)?', 'answer' => 'Anda dapat mengajukan secara online melalui menu "Layanan Mandiri -> Pengajuan Surat". Silakan isi data diri Anda, pilih jenis surat SKTM, dan lampirkan foto KTP serta Surat Pengantar RT/RW setempat.', 'order' => 1],
+            ['question' => 'Berapa biaya pengurusan surat administrasi di desa?', 'answer' => 'Seluruh layanan administrasi dan pengurusan surat-surat di Kantor Desa Katiku Wai gratis tanpa dipungut biaya apa pun (Rp 0,-). Jika ada pungutan liar, harap laporkan via menu Pengaduan.', 'order' => 2],
+            ['question' => 'Berapa lama waktu proses pengajuan surat online?', 'answer' => 'Setelah mengajukan secara online, berkas Anda akan diperiksa oleh perangkat desa. Waktu proses persetujuan berkas biasanya memakan waktu 1x24 jam pada hari kerja.', 'order' => 3],
+            ['question' => 'Bagaimana cara memantau status pengajuan surat saya?', 'answer' => 'Setelah berhasil mengajukan surat, Anda akan menerima Nomor Tiket unik. Anda dapat memasukkan Nomor Tiket tersebut di halaman pengaduan/cek status untuk mengetahui apakah surat sudah disetujui, ditolak, atau siap diambil.', 'order' => 4],
+        ];
+        foreach ($faqs as $faq) {
+            \App\Models\Faq::create($faq);
+        }
     }
 }

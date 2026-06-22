@@ -162,17 +162,22 @@
                     <div id="initial-view"
                         class="bg-white rounded-xl shadow-lg p-8 border border-blue-100 transition-all duration-300">
                         <h2 class="text-2xl font-bold text-blue-900 mb-6 flex items-center">
-                            <i data-feather="check-circle" class="mr-2"></i> Cek Status Pengaduan
+                            <i data-feather="check-circle" class="mr-2"></i> Lacak Pengajuan / Laporan
                         </h2>
-                        <div class="space-y-4">
+                        <p class="text-gray-600 mb-6 text-sm">Pantau status laporan pengaduan masyarakat atau pengajuan permohonan surat online Anda di sini.</p>
+                        <div class="grid grid-cols-1 gap-4">
                             <button id="check-status-button"
-                                class="w-full bg-blue-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-150">
-                                Cek Status
+                                class="w-full bg-blue-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-150 flex items-center justify-center gap-2">
+                                <i data-feather="message-square" class="w-5 h-5"></i> Cek Status Pengaduan
+                            </button>
+                            <button id="check-letter-button"
+                                class="w-full bg-green-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition duration-150 flex items-center justify-center gap-2">
+                                <i data-feather="file-text" class="w-5 h-5"></i> Cek Status Surat Online
                             </button>
                         </div>
                     </div>
 
-                    {{-- form cek status --}}
+                    {{-- form cek status pengaduan --}}
                     <div id="input-form-view"
                         class="hidden bg-white rounded-xl shadow-lg p-8 border border-blue-100 mt-6 transition-all duration-300">
                         <h2 class="text-2xl font-bold text-blue-900 mb-6 flex items-center">
@@ -190,11 +195,37 @@
                             </div>
 
                             <button type="submit"
-                                class="w-full bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-150">
+                                class="w-full bg-blue-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-150">
                                 Cari Status
                             </button>
                         </form>
                         <button id="back-button"
+                            class="mt-4 w-full text-blue-900 px-6 py-2 rounded-lg font-semibold hover:text-blue-700 transition duration-150 text-sm">
+                            &larr; Kembali
+                        </button>
+                    </div>
+
+                    {{-- form cek status surat --}}
+                    <div id="input-letter-view"
+                        class="hidden bg-white rounded-xl shadow-lg p-8 border border-blue-100 mt-6 transition-all duration-300">
+                        <h2 class="text-2xl font-bold text-blue-900 mb-6 flex items-center">
+                            <i data-feather="search" class="mr-2"></i> Masukkan Nomor Tiket Surat
+                        </h2>
+                        <form action="{{ route('letter-requests.check') }}" method="GET" class="space-y-6">
+                            <div>
+                                <label for="letter-code" class="block text-sm font-medium text-gray-700 mb-2">Nomor Tiket Pengajuan Surat</label>
+                                <input type="text" id="letter-code" name="code" required
+                                    placeholder="Contoh: SRT-20260622-AB12D"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150">
+                                <p class="mt-2 text-sm text-gray-500">Masukkan nomor tiket unik pengajuan surat online Anda untuk melacak progress.</p>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-green-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition duration-150">
+                                Lacak Surat Online
+                            </button>
+                        </form>
+                        <button id="back-letter-button"
                             class="mt-4 w-full text-blue-900 px-6 py-2 rounded-lg font-semibold hover:text-blue-700 transition duration-150 text-sm">
                             &larr; Kembali
                         </button>
@@ -308,16 +339,29 @@
         // Logika sederhana untuk menampilkan/menyembunyikan form
         const initialView = document.getElementById('initial-view');
         const inputFormView = document.getElementById('input-form-view');
+        const inputLetterView = document.getElementById('input-letter-view');
         const checkStatusButton = document.getElementById('check-status-button');
+        const checkLetterButton = document.getElementById('check-letter-button');
         const backButton = document.getElementById('back-button');
+        const backLetterButton = document.getElementById('back-letter-button');
 
         checkStatusButton.addEventListener('click', () => {
             initialView.classList.add('hidden');
             inputFormView.classList.remove('hidden');
         });
 
+        checkLetterButton.addEventListener('click', () => {
+            initialView.classList.add('hidden');
+            inputLetterView.classList.remove('hidden');
+        });
+
         backButton.addEventListener('click', () => {
             inputFormView.classList.add('hidden');
+            initialView.classList.remove('hidden');
+        });
+
+        backLetterButton.addEventListener('click', () => {
+            inputLetterView.classList.add('hidden');
             initialView.classList.remove('hidden');
         });
     </script>

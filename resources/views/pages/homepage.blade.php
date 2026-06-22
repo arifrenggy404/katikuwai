@@ -219,6 +219,55 @@
     </div>
 </section>
 
+<!-- Events Section -->
+<section class="py-16 bg-gray-50 border-t border-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Agenda & Kegiatan Desa</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Pantau jadwal kegiatan, rapat, posyandu, dan agenda kemasyarakatan di {{ $setting?->desa_name ?? 'Desa Katiku Wai' }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            @forelse($events as $event)
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+                    <!-- Date Badge -->
+                    <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <i class="far fa-calendar-alt text-lg"></i>
+                            <span class="font-semibold">{{ \Carbon\Carbon::parse($event->date)->translatedFormat('d F Y') }}</span>
+                        </div>
+                        <div class="bg-blue-800 text-xs px-2.5 py-1 rounded-full text-blue-100 flex items-center font-medium">
+                            <i class="far fa-clock mr-1"></i> {{ \Carbon\Carbon::parse($event->time)->format('H:i') }} WITA
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2">{{ $event->title }}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">{{ $event->description }}</p>
+                        </div>
+                        
+                        <div class="border-t border-gray-100 pt-4 mt-auto">
+                            <div class="flex items-start text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt text-red-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="line-clamp-2">{{ $event->location }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+                    <div class="text-gray-400 text-5xl mb-4">
+                        <i class="far fa-calendar-times"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-700">Belum Ada Agenda Terdekat</h3>
+                    <p class="text-gray-500 text-sm mt-1">Silakan periksa kembali nanti untuk pembaruan jadwal kegiatan.</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
 <!-- Contact Section -->
 <section class="py-10 bg-white">
     <div class="container mx-auto px-4">

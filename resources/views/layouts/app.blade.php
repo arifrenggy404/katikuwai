@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ ($setting && $setting->desa_logo) ? asset('storage/' . $setting->desa_logo) : asset('favicon.ico') }}" type="image/x-icon">
     <title>@yield('title', 'Website Desa')</title>
     @vite('resources/css/app.css')
 </head>

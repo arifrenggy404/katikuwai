@@ -70,12 +70,27 @@
                 <a href="/layanan"
                     class="flex items-center space-x-1 text-sm hover:bg-blue-700 px-3 py-2 rounded transition duration-300">
                     <i class="fas fa-info-circle"></i>
-                    <span>Informasi Layanan</span>
+                    <span>Layanan Dokumen</span>
+                </a>
+                <a href="/layanan/pengajuan-surat"
+                    class="flex items-center space-x-1 text-sm hover:bg-blue-700 px-3 py-2 rounded transition duration-300">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Surat Online</span>
+                </a>
+                <a href="/galeri"
+                    class="flex items-center space-x-1 text-sm hover:bg-blue-700 px-3 py-2 rounded transition duration-300">
+                    <i class="fas fa-images"></i>
+                    <span>Galeri Foto</span>
                 </a>
                 <a href="/pengaduan"
                     class="flex items-center space-x-1 text-sm hover:bg-blue-700 px-3 py-2 rounded transition duration-300">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <span>Pengaduan</span>
+                </a>
+                <a href="/faq"
+                    class="flex items-center space-x-1 text-sm hover:bg-blue-700 px-3 py-2 rounded transition duration-300">
+                    <i class="fas fa-question-circle"></i>
+                    <span>FAQ</span>
                 </a>
             </div>
 
