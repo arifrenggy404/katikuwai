@@ -15,7 +15,8 @@
         </div>
 
         {{-- Main Content --}}
-        <main class="container mx-auto px-4 py-12">
+        <!-- Pengaduan Main Container -->
+        <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 {{-- Form Section --}}
                 <section class="bg-white rounded-xl shadow-lg p-8 border border-blue-100">
@@ -232,7 +233,7 @@
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     </section>
 
     {{-- LOAD LIBRARY DI SINI (SEBELUM SCRIPT) --}}

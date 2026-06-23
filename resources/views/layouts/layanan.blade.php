@@ -31,9 +31,9 @@
     {{-- Header --}}
     @include('partials.header')
 
-    <main>
+    <div class="w-full min-h-screen">
         @yield('content')
-    </main>
+    </div>
 
          <!-- Footer page informasi layanan -->
     <footer class="bg-gray-900 text-white py-12">

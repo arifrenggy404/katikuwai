@@ -26,7 +26,7 @@
 </div>
 
 <!-- Main Content -->
-<main class="container mx-auto px-4 py-12">
+<div class="container mx-auto px-4 py-12">
     <!-- Profil Desa Section -->
     <section class="mb-16 fade-in">
         <h2 class="text-3xl font-bold text-blue-900 mb-8 text-center relative pb-4">
@@ -625,14 +625,9 @@
                         Lihat Peta Lengkap
                     </a>
                     <p class="text-gray-600 mt-4 mb-6 text-sm">Aktifkan lokasi untuk melihat peta interaktif</p>
-                </div>
-            </div>
         </div>
     </section>
-</main>
-
-<!-- Footer -->
-@endsection
+</div>
 
 <script>
     feather.replace();
@@ -673,5 +668,4 @@
         animateFadeIn(); // Jalankan sekali saat load
     });
 </script>
-
-</html>
+@endsection

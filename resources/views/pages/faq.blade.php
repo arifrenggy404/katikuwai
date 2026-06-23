@@ -12,7 +12,7 @@
 </div>
 
 <!-- FAQ Section -->
-<main class="container mx-auto px-4 py-12 max-w-4xl">
+<div class="container mx-auto px-4 py-12 max-w-4xl">
     <div class="bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden p-6 md:p-10">
         <h2 class="text-2xl font-bold text-blue-900 mb-8 text-center relative pb-4">
             Pertanyaan Umum Pelayanan
@@ -83,5 +83,5 @@
             </a>
         </div>
     </div>
-</main>
+</div>
 @endsection

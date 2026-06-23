@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<main class="container mx-auto px-4 py-12 max-w-4xl">
+<div class="container mx-auto px-4 py-12 max-w-4xl">
     <!-- Success Ticket Message -->
     @if(session('success_ticket'))
         <div class="bg-green-50 border border-green-200 rounded-xl p-8 shadow-md mb-8 text-center animate-fadeIn">
@@ -139,5 +139,5 @@
             <a href="/pengaduan" class="text-blue-600 font-semibold hover:underline">Pantau Status Surat Anda di Sini</a>
         </div>
     @endif
-</main>
+</div>
 @endsection

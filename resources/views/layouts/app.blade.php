@@ -71,9 +71,9 @@
     @include('partials.header')
 
     {{-- Konten halaman --}}
-    <main>
+    <div class="w-full min-h-screen">
         @yield('content')
-    </main>
+    </div>
 
     {{-- Footer --}}
     @include('partials.footer')

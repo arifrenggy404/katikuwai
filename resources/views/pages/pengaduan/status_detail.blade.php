@@ -13,7 +13,8 @@
             </div>
         </div>
 
-        <main class="container mx-auto px-4 py-12">
+        <!-- Ticket Status Detail Container -->
+        <div class="container mx-auto px-4 py-12">
             @include('partials.flash-message') {{-- Pastikan Anda memiliki partial untuk menampilkan session message (jika ada) --}}
 
             <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 border border-blue-100">
@@ -83,7 +84,7 @@
                     </a>
                 </div>
             </div>
-        </main>
+        </div>
     </section>
 
     <script>

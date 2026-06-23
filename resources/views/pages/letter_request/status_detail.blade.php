@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<main class="container mx-auto px-4 py-12 max-w-3xl animate-fadeIn">
+<div class="container mx-auto px-4 py-12 max-w-3xl animate-fadeIn">
     <!-- Status Card Container -->
     <div class="bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden">
         
@@ -111,5 +111,5 @@
         </div>
 
     </div>
-</main>
+</div>
 @endsection

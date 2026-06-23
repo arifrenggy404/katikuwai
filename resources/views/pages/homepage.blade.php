@@ -337,12 +337,9 @@
                     Kirim Pesan
                 </button>
             </form>
-
         </div>
     </div>
 </section>
-</div>
 
 <!-- Footer -->
 @endsection
-</section>

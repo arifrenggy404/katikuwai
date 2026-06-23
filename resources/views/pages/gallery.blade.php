@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<main class="container mx-auto px-4 py-12 max-w-7xl" x-data="{ 
+<div class="container mx-auto px-4 py-12 max-w-7xl" x-data="{ 
     activeAlbum: 'all',
     lightboxOpen: false,
     lightboxImage: '',
@@ -101,5 +101,5 @@
             <p x-text="lightboxCaption" class="text-white text-center mt-4 text-base md:text-lg font-medium max-w-2xl px-4"></p>
         </div>
     </div>
-</main>
+</div>
 @endsection

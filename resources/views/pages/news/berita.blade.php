@@ -11,7 +11,7 @@
     }
 </style>
 
-<main class="container mx-auto pt-18 pb-3 px-4 sm:px-8 max-w-7xl"> 
+<div class="container mx-auto pt-18 pb-3 px-4 sm:px-8 max-w-7xl"> 
     {{-- Center dengan mx-auto dan max-w-7xl --}}
     
     <!-- Featured News Banner -->
@@ -114,9 +114,7 @@
             Muat Lebih Banyak Berita
         </button>
     </div>
-</main>
-
-@endsection
+</div>
 
 {{-- Slideshow Script --}}
 <script>
@@ -159,3 +157,4 @@
         if (slides.length > 1) start();
     });
 </script>
+@endsection
