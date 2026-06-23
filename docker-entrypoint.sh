@@ -37,10 +37,11 @@ fi
 php artisan storage:link --force
 
 # Configure Apache to listen on $PORT dynamically (default to 80 if not set)
-PORT_TO_USE=${PORT:-80}
+# Ensure we clean carriage returns and make the replacement idempotent
+PORT_TO_USE=$(echo "${PORT:-80}" | tr -d '\r')
 echo "Configuring Apache to listen on port ${PORT_TO_USE}..."
-sed -i "s/Listen 80/Listen ${PORT_TO_USE}/g" /etc/apache2/ports.conf
-sed -i "s/*:80/*:${PORT_TO_USE}/g" /etc/apache2/sites-available/*.conf
+sed -i -E "s/^Listen [0-9]+/Listen ${PORT_TO_USE}/g" /etc/apache2/ports.conf
+sed -i -E "s/\*:[0-9]+/\*:${PORT_TO_USE}/g" /etc/apache2/sites-available/*.conf
 
 # Disable conflicting MPM modules and enable prefork at runtime
 echo "Configuring Apache MPM modules..."
