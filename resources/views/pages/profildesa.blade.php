@@ -234,14 +234,14 @@
                     <div class="flex items-center justify-center p-4 bg-gray-50 rounded-xl mb-6" style="height: 300px; position: relative;">
                         <canvas id="apbdesComparisonChart"></canvas>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-green-50 border border-green-150 p-4 rounded-xl">
                             <p class="text-xs text-green-700 font-semibold uppercase tracking-wider">Total Pendapatan</p>
-                            <p class="text-2xl font-extrabold text-green-900 mt-1">Rp {{ number_format($budgets->where('type', 'pendapatan')->sum('amount'), 0, ',', '.') }}</p>
+                            <p class="text-xl sm:text-2xl font-extrabold text-green-900 mt-1 break-all">Rp {{ number_format($budgets->where('type', 'pendapatan')->sum('amount'), 0, ',', '.') }}</p>
                         </div>
                         <div class="bg-red-50 border border-red-150 p-4 rounded-xl">
                             <p class="text-xs text-red-700 font-semibold uppercase tracking-wider">Total Belanja</p>
-                            <p class="text-2xl font-extrabold text-red-900 mt-1">Rp {{ number_format($budgets->where('type', 'belanja')->sum('amount'), 0, ',', '.') }}</p>
+                            <p class="text-xl sm:text-2xl font-extrabold text-red-900 mt-1 break-all">Rp {{ number_format($budgets->where('type', 'belanja')->sum('amount'), 0, ',', '.') }}</p>
                         </div>
                     </div>
                 </div>
