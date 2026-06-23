@@ -58,7 +58,12 @@ class LetterRequestController extends Controller
 
     public function checkStatus(Request $request)
     {
-        $code = $request->input('code');
+        $code = strtoupper(trim($request->input('code')));
+
+        // If it starts with TKT-, redirect to the complaint status checker
+        if ($code && str_starts_with($code, 'TKT-')) {
+            return redirect()->route('pengaduan.check-status', ['code' => $code]);
+        }
 
         if (!$code) {
             return redirect()->route('pengaduan')->with('error', 'Silakan masukkan nomor tiket pengajuan surat Anda.');

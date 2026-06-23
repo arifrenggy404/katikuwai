@@ -182,15 +182,22 @@ class PengaduanController extends Controller
     // method check status
     public function checkStatus(Request $request)
     {
+        $code = strtoupper(trim($request->input('code')));
+
+        // If it starts with SRT-, redirect to the letter status checker
+        if ($code && str_starts_with($code, 'SRT-')) {
+            return redirect()->route('letter-requests.check', ['code' => $code]);
+        }
+
         // 1. Validasi input kode
         $request->validate([
-            'code' => 'required|string|max:12|regex:/^[A-Z]{3}-[A-Z0-9]{8}$/', // Sesuaikan regex dengan format kode Anda
+            'code' => 'required|string|max:12|regex:/^[A-Z]{3}-[A-Z0-9]{8}$/', // Sesuaikan dengan format TKT-XXXXXXXX
         ], [
             'code.required' => 'Kode pengaduan wajib diisi.',
-            'code.regex' => 'Format kode pengaduan tidak valid (Contoh: KPD-2025-00123).',
+            'code.regex' => 'Format kode pengaduan tidak valid (Contoh: TKT-XXXXXXXX).',
         ]);
 
-        $nomor_tiket = $request->input('code');
+        $nomor_tiket = $code;
 
         // 2. Cari data pengaduan
         $pengaduan = Pengaduan::where('nomor_tiket', $nomor_tiket)->first();
@@ -198,7 +205,7 @@ class PengaduanController extends Controller
         // 3. Tangani jika data tidak ditemukan
         if (!$pengaduan) {
             return redirect()
-                ->route('/pengaduan') // Ganti dengan route halaman pengaduan Anda
+                ->route('pengaduan') // Ganti dengan route halaman pengaduan Anda
                 ->with('error', 'Kode pengaduan **' . $nomor_tiket . '** tidak ditemukan. Pastikan kode sudah benar.');
         }
 
