@@ -47,5 +47,10 @@ echo "Configuring Apache MPM modules..."
 a2dismod mpm_event mpm_worker || true
 a2enmod mpm_prefork
 
+# Ensure correct permissions on storage and bootstrap directories at runtime
+echo "Fixing permissions for storage and bootstrap/cache..."
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 # Start Apache in the foreground
 exec apache2-foreground
