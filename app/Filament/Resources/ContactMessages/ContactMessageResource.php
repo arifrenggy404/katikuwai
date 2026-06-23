@@ -22,12 +22,12 @@ class ContactMessageResource extends Resource
     protected static string|\UnitEnum|null $navigationGroup = 'Layanan Desa';
     public static function getPluralLabel(): ?string
     {
-        return 'Layanan Desa';
+        return 'Kotak Pesan';
     }
 
     public static function getLabel(): ?string
     {
-        return 'Layanan Desa';
+        return 'Kotak Pesan';
     }
 
     public static function form(Schema $schema): Schema

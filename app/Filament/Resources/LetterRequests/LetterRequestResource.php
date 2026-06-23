@@ -18,6 +18,14 @@ class LetterRequestResource extends Resource
 {
     protected static ?string $model = LetterRequest::class;
 
+    protected static ?string $navigationLabel = 'Permohonan Surat';
+
+    protected static ?string $modelLabel = 'Permohonan Surat';
+
+    protected static ?string $pluralModelLabel = 'Permohonan Surat';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Layanan Mandiri';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema

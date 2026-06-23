@@ -18,6 +18,14 @@ class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
 
+    protected static ?string $navigationLabel = 'Agenda Kegiatan';
+
+    protected static ?string $modelLabel = 'Agenda';
+
+    protected static ?string $pluralModelLabel = 'Agenda Kegiatan';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Layanan & Informasi';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema

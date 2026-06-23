@@ -18,6 +18,14 @@ class DemographicResource extends Resource
 {
     protected static ?string $model = Demographic::class;
 
+    protected static ?string $navigationLabel = 'Statistik Penduduk';
+
+    protected static ?string $modelLabel = 'Statistik';
+
+    protected static ?string $pluralModelLabel = 'Statistik Kependudukan';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Kependudukan';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema

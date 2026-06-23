@@ -18,6 +18,14 @@ class BudgetResource extends Resource
 {
     protected static ?string $model = Budget::class;
 
+    protected static ?string $navigationLabel = 'Transparansi APBDes';
+
+    protected static ?string $modelLabel = 'Anggaran';
+
+    protected static ?string $pluralModelLabel = 'Transparansi APBDes';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Keuangan';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
