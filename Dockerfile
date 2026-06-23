@@ -33,8 +33,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     bcmath \
     opcache
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+# Enable Apache rewrite module and configure MPM
+RUN a2enmod rewrite \
+    && (a2dismod mpm_event mpm_worker || true) \
+    && a2enmod mpm_prefork
 
 # Configure Apache Document Root to Laravel's public directory
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
