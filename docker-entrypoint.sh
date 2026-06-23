@@ -27,6 +27,12 @@ php artisan view:cache
 echo "Running migrations..."
 php artisan migrate --force
 
+# Seed database if SEED_DATABASE environment variable is set to true
+if [ "$SEED_DATABASE" = "true" ]; then
+    echo "Seeding database..."
+    php artisan db:seed --force
+fi
+
 # Create symbolic link for storage if it doesn't exist
 php artisan storage:link --force
 
