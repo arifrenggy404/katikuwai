@@ -5,15 +5,29 @@
 @section('content')
 
 @php
-    $kepalaDesa = $officials->firstWhere('position', 'Kepala Desa');
-    $sekdes = $officials->firstWhere('position', 'Sekretaris Desa');
-    $kaurKeuangan = $officials->firstWhere('position', 'Kepala Urusan Keuangan');
-    $kaurPerencanaan = $officials->firstWhere('position', 'Kepala Urusan Perencanaan');
-    $kaurTU = $officials->firstWhere('position', 'Kepala Urusan Tata Usaha');
-    $kasiPemerintahan = $officials->firstWhere('position', 'Kepala Seksi Pemerintahan');
-    $kasiKesejahteraan = $officials->firstWhere('position', 'Kepala Seksi Kesejahteraan');
-    $kasiPelayanan = $officials->firstWhere('position', 'Kepala Seksi Pelayanan');
-    $ketuaBPD = $officials->firstWhere('position', 'Ketua BPD') ?? $officials->where('group', 'bpd')->first();
+    $findOfficial = function($positions) use ($officials) {
+        if (!is_array($positions)) {
+            $positions = [$positions];
+        }
+        $normalizedPositions = array_map(function($pos) {
+            return trim(strtolower($pos));
+        }, $positions);
+
+        return $officials->first(function($official) use ($normalizedPositions) {
+            $officialPos = trim(strtolower($official->position));
+            return in_array($officialPos, $normalizedPositions);
+        });
+    };
+
+    $kepalaDesa = $findOfficial(['Kepala Desa', 'Kades']);
+    $sekdes = $findOfficial(['Sekretaris Desa', 'Sekdes']);
+    $kaurKeuangan = $findOfficial(['Kepala Urusan Keuangan', 'Kaur Keuangan']);
+    $kaurPerencanaan = $findOfficial(['Kepala Urusan Perencanaan', 'Kaur Perencanaan']);
+    $kaurTU = $findOfficial(['Kepala Urusan Tata Usaha', 'Kaur Tata Usaha', 'Kepala Urusan Umum', 'Kaur Umum', 'Kepala Urusan Tata Usaha & Umum', 'Kepala Urusan Tata Usaha / Umum', 'Kaur Tata Usaha / Umum', 'Kaur TU', 'Kaur TU & Umum', 'Kaur TU/Umum']);
+    $kasiPemerintahan = $findOfficial(['Kepala Seksi Pemerintahan', 'Kasi Pemerintahan']);
+    $kasiKesejahteraan = $findOfficial(['Kepala Seksi Kesejahteraan', 'Kasi Kesejahteraan', 'Kepala Seksi Kesejahtraan', 'Kasi Kesejahtraan']);
+    $kasiPelayanan = $findOfficial(['Kepala Seksi Pelayanan', 'Kasi Pelayanan']);
+    $ketuaBPD = $findOfficial(['Ketua BPD', 'Ketua Badan Permusyawaratan Desa']) ?? $officials->where('group', 'bpd')->first();
     $dusunList = $officials->where('group', 'dusun')->sortBy('order');
 @endphp
 
