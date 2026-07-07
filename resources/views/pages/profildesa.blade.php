@@ -5,30 +5,24 @@
 @section('content')
 
 @php
-    $findOfficial = function($positions) use ($officials) {
-        if (!is_array($positions)) {
-            $positions = [$positions];
-        }
-        $normalizedPositions = array_map(function($pos) {
-            return trim(strtolower($pos));
-        }, $positions);
+    // Group officials
+    $pemerintahOfficials = $officials->where('group', 'pemerintah')->sortBy('order');
+    $bpdOfficials = $officials->where('group', 'bpd')->sortBy('order');
+    $dusunOfficials = $officials->where('group', 'dusun')->sortBy('order');
 
-        return $officials->first(function($official) use ($normalizedPositions) {
-            $officialPos = trim(strtolower($official->position));
-            return in_array($officialPos, $normalizedPositions);
+    // Find Kepala Desa if any
+    $kepalaDesa = $pemerintahOfficials->first(function($official) {
+        $pos = strtolower(trim($official->position));
+        return $pos === 'kepala desa' || $pos === 'kades';
+    });
+
+    // Other pemerintah officials (excluding Kepala Desa if found)
+    $otherPemerintah = $pemerintahOfficials;
+    if ($kepalaDesa) {
+        $otherPemerintah = $pemerintahOfficials->reject(function($official) use ($kepalaDesa) {
+            return $official->id === $kepalaDesa->id;
         });
-    };
-
-    $kepalaDesa = $findOfficial(['Kepala Desa', 'Kades']);
-    $sekdes = $findOfficial(['Sekretaris Desa', 'Sekdes']);
-    $kaurKeuangan = $findOfficial(['Kepala Urusan Keuangan', 'Kaur Keuangan']);
-    $kaurPerencanaan = $findOfficial(['Kepala Urusan Perencanaan', 'Kaur Perencanaan']);
-    $kaurTU = $findOfficial(['Kepala Urusan Tata Usaha', 'Kaur Tata Usaha', 'Kepala Urusan Umum', 'Kaur Umum', 'Kepala Urusan Tata Usaha & Umum', 'Kepala Urusan Tata Usaha / Umum', 'Kaur Tata Usaha / Umum', 'Kaur TU', 'Kaur TU & Umum', 'Kaur TU/Umum']);
-    $kasiPemerintahan = $findOfficial(['Kepala Seksi Pemerintahan', 'Kasi Pemerintahan']);
-    $kasiKesejahteraan = $findOfficial(['Kepala Seksi Kesejahteraan', 'Kasi Kesejahteraan', 'Kepala Seksi Kesejahtraan', 'Kasi Kesejahtraan']);
-    $kasiPelayanan = $findOfficial(['Kepala Seksi Pelayanan', 'Kasi Pelayanan']);
-    $ketuaBPD = $findOfficial(['Ketua BPD', 'Ketua Badan Permusyawaratan Desa']) ?? $officials->where('group', 'bpd')->first();
-    $dusunList = $officials->where('group', 'dusun')->sortBy('order');
+    }
 @endphp
 
 <!-- Hero Banner -->
@@ -478,118 +472,86 @@
         </h2>>
 
         <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-blue-100 p-8">
-            <!-- Kepala Desa -->
-            <div class="flex flex-col items-center justify-center mb-16">
-                <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-900 mb-5 shadow-lg">
-                    <img src="{{ $kepalaDesa && $kepalaDesa->photo ? asset('storage/' . $kepalaDesa->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Desa" class="w-full h-full object-cover">
-                </div>
-                <h3 class="text-2xl font-semibold text-blue-900 mb-3">{{ $kepalaDesa ? $kepalaDesa->position : 'Kepala Desa' }}</h3>
-                <div class="bg-blue-900 text-white px-6 py-3 rounded-lg">
-                    <p class="font-bold">{{ $kepalaDesa ? $kepalaDesa->name : 'BELUM DIATUR' }}</p>
-                </div>
-            </div>
-
-            <!-- Level Kedua -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                <div class="text-center">
-                    <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-600 mx-auto mb-4 shadow-md">
-                        <img src="{{ $sekdes && $sekdes->photo ? asset('storage/' . $sekdes->photo) : asset('images/gambar.jpeg') }}" alt="Sekretaris Desa" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $sekdes ? $sekdes->position : 'Sekretaris Desa' }}</h4>
-                    <div class="bg-blue-100 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $sekdes ? $sekdes->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-600 mx-auto mb-4 shadow-md">
-                        <img src="{{ $kaurKeuangan && $kaurKeuangan->photo ? asset('storage/' . $kaurKeuangan->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Urusan Keuangan" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kaurKeuangan ? $kaurKeuangan->position : 'Kepala Urusan Keuangan' }}</h4>
-                    <div class="bg-blue-100 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kaurKeuangan ? $kaurKeuangan->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-600 mx-auto mb-4 shadow-md">
-                        <img src="{{ $kaurPerencanaan && $kaurPerencanaan->photo ? asset('storage/' . $kaurPerencanaan->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Urusan Perencanaan" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kaurPerencanaan ? $kaurPerencanaan->position : 'Kepala Urusan Perencanaan' }}</h4>
-                    <div class="bg-blue-100 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kaurPerencanaan ? $kaurPerencanaan->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-600 mx-auto mb-4 shadow-md">
-                        <img src="{{ $kaurTU && $kaurTU->photo ? asset('storage/' . $kaurTU->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Urusan Tata Usaha" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kaurTU ? $kaurTU->position : 'Kepala Urusan Tata Usaha' }}</h4>
-                    <div class="bg-blue-100 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kaurTU ? $kaurTU->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Level Ketiga -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                <div class="text-center">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-blue-400 mx-auto mb-3 shadow-md">
-                        <img src="{{ $kasiPemerintahan && $kasiPemerintahan->photo ? asset('storage/' . $kasiPemerintahan->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Seksi Pemerintahan" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kasiPemerintahan ? $kasiPemerintahan->position : 'Kepala Seksi Pemerintahan' }}</h4>
-                    <div class="bg-blue-50 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kasiPemerintahan ? $kasiPemerintahan->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-blue-400 mx-auto mb-3 shadow-md">
-                        <img src="{{ $kasiKesejahteraan && $kasiKesejahteraan->photo ? asset('storage/' . $kasiKesejahteraan->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Seksi Kesejahteraan" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kasiKesejahteraan ? $kasiKesejahteraan->position : 'Kepala Seksi Kesejahteraan' }}</h4>
-                    <div class="bg-blue-50 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kasiKesejahteraan ? $kasiKesejahteraan->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-blue-400 mx-auto mb-3 shadow-md">
-                        <img src="{{ $kasiPelayanan && $kasiPelayanan->photo ? asset('storage/' . $kasiPelayanan->photo) : asset('images/gambar.jpeg') }}" alt="Kepala Seksi Pelayanan" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $kasiPelayanan ? $kasiPelayanan->position : 'Kepala Seksi Pelayanan' }}</h4>
-                    <div class="bg-blue-50 px-4 py-2 rounded-lg">
-                        <p class="font-medium">{{ $kasiPelayanan ? $kasiPelayanan->name : 'BELUM DIATUR' }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BPD -->
-            <div class="flex flex-col items-center justify-center mb-16">
-                <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-500 mx-auto mb-4 shadow-md">
-                    <img src="{{ $ketuaBPD && $ketuaBPD->photo ? asset('storage/' . $ketuaBPD->photo) : asset('images/gambar.jpeg') }}" alt="Ketua BPD" class="w-full h-full object-cover">
-                </div>
-                <h4 class="text-xl font-semibold text-blue-900 mb-3">Badan Permusyawaratan Desa (BPD)</h4>
-                <div class="bg-blue-50 px-6 py-2 rounded-lg">
-                    <p class="font-medium">Ketua: {{ $ketuaBPD ? $ketuaBPD->name : 'BELUM DIATUR' }}</p>
-                </div>
-            </div>
-
-            <!-- RW dan RT -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                @foreach($dusunList as $dusunItem)
-                    <div class="text-center">
-                        <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-400 mx-auto mb-3 shadow-md">
-                            <img src="{{ $dusunItem->photo ? asset('storage/' . $dusunItem->photo) : asset('images/gambar.jpeg') }}" alt="{{ $dusunItem->position }}" class="w-full h-full object-cover">
+            
+            @if($pemerintahOfficials->count() > 0)
+                <h3 class="text-2xl font-bold text-blue-900 text-center mb-8 border-b pb-4">Pemerintah Desa</h3>
+                
+                <!-- Kepala Desa (Centered at the top if present) -->
+                @if($kepalaDesa)
+                    <div class="flex flex-col items-center justify-center mb-12">
+                        <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-900 mb-5 shadow-lg">
+                            <img src="{{ $kepalaDesa->photo ? asset('storage/' . $kepalaDesa->photo) : asset('images/gambar.jpeg') }}" alt="{{ $kepalaDesa->position }}" class="w-full h-full object-cover">
                         </div>
-                        <h4 class="text-lg font-semibold text-blue-900 mb-2">{{ $dusunItem->position }}</h4>
-                        <div class="bg-gray-50 px-4 py-2 rounded-lg">
-                            <p class="font-medium">{{ $dusunItem->name }}</p>
+                        <h4 class="text-2xl font-semibold text-blue-900 mb-2">{{ $kepalaDesa->position }}</h4>
+                        <div class="bg-blue-900 text-white px-6 py-3 rounded-lg shadow-md">
+                            <p class="font-bold text-lg">{{ $kepalaDesa->name }}</p>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                @endif
+
+                <!-- Other Pemerintah Officials Grid -->
+                @if($otherPemerintah->count() > 0)
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+                        @foreach($otherPemerintah as $official)
+                            <div class="text-center bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200">
+                                <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-600 mx-auto mb-4 shadow-md">
+                                    <img src="{{ $official->photo ? asset('storage/' . $official->photo) : asset('images/gambar.jpeg') }}" alt="{{ $official->position }}" class="w-full h-full object-cover">
+                                </div>
+                                <h5 class="text-lg font-semibold text-blue-900 mb-2 min-h-[3rem] flex items-center justify-center">{{ $official->position }}</h5>
+                                <div class="bg-blue-100 px-4 py-2 rounded-lg">
+                                    <p class="font-medium text-blue-950">{{ $official->name }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            @endif
+
+            <!-- BPD (Badan Permusyawaratan Desa) -->
+            @if($bpdOfficials->count() > 0)
+                <div class="border-t border-gray-200 pt-12 mt-12">
+                    <h3 class="text-2xl font-bold text-blue-900 text-center mb-8 border-b pb-4">Badan Permusyawaratan Desa (BPD)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+                        @foreach($bpdOfficials as $official)
+                            <div class="text-center bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200">
+                                <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-blue-500 mx-auto mb-4 shadow-md">
+                                    <img src="{{ $official->photo ? asset('storage/' . $official->photo) : asset('images/gambar.jpeg') }}" alt="{{ $official->position }}" class="w-full h-full object-cover">
+                                </div>
+                                <h5 class="text-lg font-semibold text-blue-900 mb-2 min-h-[3rem] flex items-center justify-center">{{ $official->position }}</h5>
+                                <div class="bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+                                    <p class="font-medium text-blue-950">{{ $official->name }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Dusun / RW / RT -->
+            @if($dusunOfficials->count() > 0)
+                <div class="border-t border-gray-200 pt-12 mt-12">
+                    <h3 class="text-2xl font-bold text-blue-900 text-center mb-8 border-b pb-4">Kepala Dusun / RW / RT</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        @foreach($dusunOfficials as $official)
+                            <div class="text-center bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200">
+                                <div class="w-28 h-28 rounded-full overflow-hidden border-3 border-gray-400 mx-auto mb-4 shadow-md">
+                                    <img src="{{ $official->photo ? asset('storage/' . $official->photo) : asset('images/gambar.jpeg') }}" alt="{{ $official->position }}" class="w-full h-full object-cover">
+                                </div>
+                                <h5 class="text-lg font-semibold text-blue-900 mb-2 min-h-[3rem] flex items-center justify-center">{{ $official->position }}</h5>
+                                <div class="bg-gray-100 px-4 py-2 rounded-lg border border-gray-200">
+                                    <p class="font-medium text-gray-900">{{ $official->name }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            @if($pemerintahOfficials->count() == 0 && $bpdOfficials->count() == 0 && $dusunOfficials->count() == 0)
+                <div class="text-center py-12">
+                    <p class="text-gray-500 text-lg">Struktur organisasi belum diatur.</p>
+                </div>
+            @endif
         </div>
     </section>
     <!-- Potensi Desa Section -->
