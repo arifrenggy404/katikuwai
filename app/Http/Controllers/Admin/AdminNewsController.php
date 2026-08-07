@@ -29,16 +29,25 @@ class AdminNewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'news_category_id' => 'required|exists:news_categories,id',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:5120',
             'is_featured' => 'nullable|boolean',
         ]);
 
+        $author = \App\Models\Author::firstOrCreate(
+            ['username' => 'admin'],
+            ['name' => 'Admin Desa', 'bio' => 'Administrator Desa Katikuwai']
+        );
+
+        $validated['author_id'] = $author->id;
         $validated['slug'] = Str::slug($validated['title']) . '-' . time();
         $validated['is_featured'] = $request->has('is_featured');
+        $validated['thumbnail'] = 'news/default.jpg';
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('news', 'public');
+            $validated['thumbnail'] = $request->file('image')->store('news', 'public');
         }
+
+        unset($validated['image']);
 
         News::create($validated);
 
@@ -57,18 +66,20 @@ class AdminNewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'news_category_id' => 'required|exists:news_categories,id',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:5120',
             'is_featured' => 'nullable|boolean',
         ]);
 
         $validated['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
-            if ($news->image) {
-                Storage::disk('public')->delete($news->image);
+            if ($news->thumbnail && Storage::disk('public')->exists($news->thumbnail)) {
+                Storage::disk('public')->delete($news->thumbnail);
             }
-            $validated['image'] = $request->file('image')->store('news', 'public');
+            $validated['thumbnail'] = $request->file('image')->store('news', 'public');
         }
+
+        unset($validated['image']);
 
         $news->update($validated);
 

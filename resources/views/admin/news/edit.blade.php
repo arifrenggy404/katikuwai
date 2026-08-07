@@ -31,9 +31,9 @@
 
         <div class="mb-3">
             <label class="form-label fw-semibold">Gambar Sampul Saat Ini</label>
-            @if($news->image)
+            @if($news->thumbnail)
                 <div class="mb-2">
-                    <img src="{{ asset('storage/' . $news->image) }}" class="rounded border" width="120">
+                    <img src="{{ asset('storage/' . $news->thumbnail) }}" class="rounded border" width="120">
                 </div>
             @endif
             <input type="file" name="image" class="form-control" accept="image/*">

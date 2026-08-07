@@ -27,8 +27,8 @@
                 @forelse($news as $item)
                     <tr>
                         <td>
-                            @if($item->image)
-                                <img src="{{ asset('storage/' . $item->image) }}" class="rounded" width="50" height="40" style="object-fit: cover;">
+                            @if($item->thumbnail)
+                                <img src="{{ asset('storage/' . $item->thumbnail) }}" class="rounded" width="50" height="40" style="object-fit: cover;">
                             @else
                                 <span class="badge bg-light text-muted border">No Img</span>
                             @endif
