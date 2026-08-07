@@ -1,7 +1,10 @@
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-<script src="https://unpkg.com/feather-icons"></script>
+<script src="https://unpkg.com/feather-icons" defer></script>
 <script>
-    feather.replace(); // Perintah untuk memproses semua tag [data-feather]
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    });
 </script>
 
 <section class="bg-white shadow-md z-50">
