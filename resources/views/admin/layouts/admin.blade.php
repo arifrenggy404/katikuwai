@@ -80,6 +80,12 @@
             <a href="{{ route('admin.pengaduan.index') }}" class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-dots"></i> Pengaduan
             </a>
+            <a href="{{ route('admin.letters.index') }}" class="nav-link {{ request()->routeIs('admin.letters.*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-check"></i> Surat Online
+            </a>
+            <a href="{{ route('admin.events.index') }}" class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                <i class="bi bi-calendar-event"></i> Agenda Desa
+            </a>
             <a href="{{ route('admin.officials.index') }}" class="nav-link {{ request()->routeIs('admin.officials.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Perangkat Desa
             </a>

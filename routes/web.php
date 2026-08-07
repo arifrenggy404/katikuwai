@@ -58,6 +58,8 @@ use App\Http\Controllers\Admin\AdminPengaduanController;
 use App\Http\Controllers\Admin\AdminOfficialController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminDokumenController;
+use App\Http\Controllers\Admin\AdminLetterRequestController;
+use App\Http\Controllers\Admin\AdminEventController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -76,6 +78,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Dokumen Desa CRUD
         Route::resource('dokumen', AdminDokumenController::class);
+
+        // Agenda Events CRUD
+        Route::resource('events', AdminEventController::class);
+
+        // Letter Requests Management
+        Route::get('/letters', [AdminLetterRequestController::class, 'index'])->name('letters.index');
+        Route::get('/letters/{letter}', [AdminLetterRequestController::class, 'show'])->name('letters.show');
+        Route::patch('/letters/{letter}/status', [AdminLetterRequestController::class, 'updateStatus'])->name('letters.updateStatus');
+        Route::delete('/letters/{letter}', [AdminLetterRequestController::class, 'destroy'])->name('letters.destroy');
 
         // Pengaduan Management
         Route::get('/pengaduan', [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
