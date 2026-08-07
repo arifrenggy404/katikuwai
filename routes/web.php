@@ -50,3 +50,29 @@ Route::get('/layanan/pengajuan-surat', [LetterRequestController::class, 'create'
 Route::post('/layanan/pengajuan-surat', [LetterRequestController::class, 'store'])->name('letter-requests.store');
 Route::get('/layanan/cek-surat', [LetterRequestController::class, 'checkStatus'])->name('letter-requests.check');
 
+// Custom Ultra-Fast Admin Panel Routes (Pure PHP / Blade)
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminNewsController;
+use App\Http\Controllers\Admin\AdminPengaduanController;
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+
+        // News CRUD
+        Route::resource('news', AdminNewsController::class);
+
+        // Pengaduan Management
+        Route::get('/pengaduan', [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
+        Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
+        Route::patch('/pengaduan/{pengaduan}/status', [AdminPengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
+        Route::delete('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+    });
+});
+

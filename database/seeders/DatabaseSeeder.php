@@ -24,6 +24,15 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        if (!\App\Models\User::where('email', 'admin@gmail.com')->exists()) {
+            \App\Models\User::create([
+                'name' => 'Administrator Desa',
+                'email' => 'admin@gmail.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'email_verified_at' => now(),
+            ]);
+        }
+
         // Clean up settings and seed Desa Katiku Wai
         \App\Models\Setting::query()->delete();
         \App\Models\Setting::create([
