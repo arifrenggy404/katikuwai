@@ -20,23 +20,37 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
-            $setting = null;
-            $demographics = collect();
-            $budgets = collect();
-            $events = collect();
+            $setting = \Illuminate\Support\Facades\Cache::remember('view_setting', 3600, function () {
+                try {
+                    return \App\Models\Setting::first();
+                } catch (\Throwable $e) {
+                    return null;
+                }
+            });
 
-            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
-                $setting = \App\Models\Setting::first();
-            }
-            if (\Illuminate\Support\Facades\Schema::hasTable('demographics')) {
-                $demographics = \App\Models\Demographic::all();
-            }
-            if (\Illuminate\Support\Facades\Schema::hasTable('budgets')) {
-                $budgets = \App\Models\Budget::all();
-            }
-            if (\Illuminate\Support\Facades\Schema::hasTable('events')) {
-                $events = \App\Models\Event::orderBy('date', 'asc')->get();
-            }
+            $demographics = \Illuminate\Support\Facades\Cache::remember('view_demographics', 3600, function () {
+                try {
+                    return \App\Models\Demographic::all();
+                } catch (\Throwable $e) {
+                    return collect();
+                }
+            });
+
+            $budgets = \Illuminate\Support\Facades\Cache::remember('view_budgets', 3600, function () {
+                try {
+                    return \App\Models\Budget::all();
+                } catch (\Throwable $e) {
+                    return collect();
+                }
+            });
+
+            $events = \Illuminate\Support\Facades\Cache::remember('view_events', 3600, function () {
+                try {
+                    return \App\Models\Event::orderBy('date', 'asc')->get();
+                } catch (\Throwable $e) {
+                    return collect();
+                }
+            });
 
             $view->with([
                 'setting' => $setting,
