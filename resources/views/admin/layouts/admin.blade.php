@@ -80,6 +80,9 @@
             <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                 <i class="bi bi-tags"></i> Kategori Berita
             </a>
+            <a href="{{ route('admin.banners.index') }}" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
+                <i class="bi bi-images"></i> Banner Web
+            </a>
             <a href="{{ route('admin.pengaduan.index') }}" class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-dots"></i> Pengaduan
             </a>

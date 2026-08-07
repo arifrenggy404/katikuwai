@@ -62,6 +62,7 @@ use App\Http\Controllers\Admin\AdminLetterRequestController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminPotensiController;
+use App\Http\Controllers\Admin\AdminBannerController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -77,6 +78,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Kategori Berita CRUD
         Route::resource('categories', AdminCategoryController::class);
+
+        // Banners Management
+        Route::get('/banners', [AdminBannerController::class, 'index'])->name('banners.index');
+        Route::post('/banners/home', [AdminBannerController::class, 'storeHomeBanner'])->name('banners.home.store');
+        Route::delete('/banners/home/{homeBanner}', [AdminBannerController::class, 'destroyHomeBanner'])->name('banners.home.destroy');
+        Route::post('/banners/news', [AdminBannerController::class, 'storeNewsBanner'])->name('banners.news.store');
+        Route::delete('/banners/news/{banner}', [AdminBannerController::class, 'destroyNewsBanner'])->name('banners.news.destroy');
 
         // Perangkat Desa CRUD
         Route::resource('officials', AdminOfficialController::class);
