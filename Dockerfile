@@ -49,6 +49,25 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i 's/post_max_size = 8M/post_max_size = 50M/g' "$PHP_INI_DIR/php.ini" \
     && sed -i 's/memory_limit = 128M/memory_limit = 256M/g' "$PHP_INI_DIR/php.ini"
 
+# Enable OPcache for Laravel & Filament performance
+RUN docker-php-ext-enable opcache \
+    && echo "opcache.enable=1" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.enable_cli=1" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.memory_consumption=128" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.interned_strings_buffer=16" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.max_accelerated_files=10000" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.revalidate_freq=0" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
+    && echo "opcache.validate_timestamps=0" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini"
+
+# Configure Apache Prefork Worker Limits
+RUN echo "<IfModule mpm_prefork_module>\n\
+    StartServers 5\n\
+    MinSpareServers 5\n\
+    MaxSpareServers 10\n\
+    MaxRequestWorkers 150\n\
+    MaxConnectionsPerChild 1000\n\
+</IfModule>" > /etc/apache2/mods-available/mpm_prefork.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
