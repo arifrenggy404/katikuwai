@@ -35,7 +35,7 @@ class AdminNewsController extends Controller
 
         $author = \App\Models\Author::firstOrCreate(
             ['username' => 'admin'],
-            ['name' => 'Admin Desa', 'bio' => 'Administrator Desa Katikuwai']
+            ['name' => 'Admin Desa', 'avatar' => 'authors/default.jpg', 'bio' => 'Administrator Desa Katikuwai']
         );
 
         $validated['author_id'] = $author->id;
