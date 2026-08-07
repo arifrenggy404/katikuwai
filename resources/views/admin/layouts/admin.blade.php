@@ -92,6 +92,9 @@
             <a href="{{ route('admin.officials.index') }}" class="nav-link {{ request()->routeIs('admin.officials.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Perangkat Desa
             </a>
+            <a href="{{ route('admin.potensi.index') }}" class="nav-link {{ request()->routeIs('admin.potensi.*') ? 'active' : '' }}">
+                <i class="bi bi-compass"></i> Potensi Desa
+            </a>
             <a href="{{ route('admin.dokumen.index') }}" class="nav-link {{ request()->routeIs('admin.dokumen.*') ? 'active' : '' }}">
                 <i class="bi bi-file-earmark-text"></i> Dokumen Publik
             </a>

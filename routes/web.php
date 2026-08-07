@@ -61,6 +61,7 @@ use App\Http\Controllers\Admin\AdminDokumenController;
 use App\Http\Controllers\Admin\AdminLetterRequestController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminPotensiController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -79,6 +80,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Perangkat Desa CRUD
         Route::resource('officials', AdminOfficialController::class);
+
+        // Potensi Desa CRUD
+        Route::resource('potensi', AdminPotensiController::class);
 
         // Dokumen Desa CRUD
         Route::resource('dokumen', AdminDokumenController::class);
