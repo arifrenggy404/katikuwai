@@ -92,6 +92,9 @@
             <a href="{{ route('admin.events.index') }}" class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
                 <i class="bi bi-calendar-event"></i> Agenda Desa
             </a>
+            <a href="{{ route('admin.gallery.index') }}" class="nav-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                <i class="bi bi-camera me-1"></i> Galeri Kegiatan
+            </a>
             <a href="{{ route('admin.officials.index') }}" class="nav-link {{ request()->routeIs('admin.officials.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Perangkat Desa
             </a>

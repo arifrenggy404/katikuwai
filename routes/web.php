@@ -63,6 +63,7 @@ use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminPotensiController;
 use App\Http\Controllers\Admin\AdminBannerController;
+use App\Http\Controllers\Admin\AdminGalleryController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -85,6 +86,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/banners/home/{homeBanner}', [AdminBannerController::class, 'destroyHomeBanner'])->name('banners.home.destroy');
         Route::post('/banners/news', [AdminBannerController::class, 'storeNewsBanner'])->name('banners.news.store');
         Route::delete('/banners/news/{banner}', [AdminBannerController::class, 'destroyNewsBanner'])->name('banners.news.destroy');
+
+        // Gallery Albums & Photos CRUD
+        Route::resource('gallery', AdminGalleryController::class);
+        Route::post('/gallery/{gallery}/photos', [AdminGalleryController::class, 'storePhoto'])->name('gallery.photos.store');
+        Route::delete('/gallery/photos/{photo}', [AdminGalleryController::class, 'destroyPhoto'])->name('gallery.photos.destroy');
 
         // Perangkat Desa CRUD
         Route::resource('officials', AdminOfficialController::class);
