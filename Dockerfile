@@ -33,8 +33,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     bcmath \
     opcache
 
-# Enable Apache rewrite module and configure MPM
-RUN a2enmod rewrite \
+# Enable Apache rewrite, deflate, headers, and expires modules
+RUN a2enmod rewrite deflate headers expires \
     && (a2dismod mpm_event mpm_worker || true) \
     && a2enmod mpm_prefork
 
@@ -43,7 +43,7 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Configure custom php.ini settings for production (e.g. upload limits & realpath cache)
+# Configure custom php.ini settings for production
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 50M/g' "$PHP_INI_DIR/php.ini" \
     && sed -i 's/post_max_size = 8M/post_max_size = 50M/g' "$PHP_INI_DIR/php.ini" \
@@ -51,7 +51,7 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "realpath_cache_size = 4096k" >> "$PHP_INI_DIR/php.ini" \
     && echo "realpath_cache_ttl = 600" >> "$PHP_INI_DIR/php.ini"
 
-# Enable OPcache for Laravel & Filament performance
+# Enable OPcache for Laravel performance
 RUN docker-php-ext-enable opcache \
     && echo "opcache.enable=1" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
     && echo "opcache.enable_cli=1" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
@@ -61,12 +61,12 @@ RUN docker-php-ext-enable opcache \
     && echo "opcache.revalidate_freq=0" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini" \
     && echo "opcache.validate_timestamps=0" >> "$PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini"
 
-# Configure Apache Prefork Worker Limits
+# Configure Apache Prefork Worker Limits optimized for RAM constraints
 RUN echo "<IfModule mpm_prefork_module>\n\
-    StartServers 5\n\
-    MinSpareServers 5\n\
-    MaxSpareServers 10\n\
-    MaxRequestWorkers 150\n\
+    StartServers 2\n\
+    MinSpareServers 2\n\
+    MaxSpareServers 5\n\
+    MaxRequestWorkers 50\n\
     MaxConnectionsPerChild 1000\n\
 </IfModule>" > /etc/apache2/mods-available/mpm_prefork.conf
 
@@ -76,14 +76,20 @@ WORKDIR /var/www/html
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project files
+# Copy composer manifest first for Docker layer caching
+COPY composer.json composer.lock ./
+
+# Install dependencies using Composer
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader
+
+# Copy remaining project files
 COPY . .
 
 # Copy compiled assets from node-builder
 COPY --from=node-builder /app/public/build ./public/build
 
-# Install dependencies using Composer
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Dump optimized autoloader
+RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \

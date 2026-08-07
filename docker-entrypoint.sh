@@ -23,7 +23,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan event:cache
-php artisan filament:optimize
+php artisan filament:optimize || true
 
 # Run database migrations automatically during deployment
 echo "Running migrations..."
