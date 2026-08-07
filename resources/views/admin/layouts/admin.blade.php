@@ -80,6 +80,12 @@
             <a href="{{ route('admin.pengaduan.index') }}" class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-dots"></i> Pengaduan
             </a>
+            <a href="{{ route('admin.officials.index') }}" class="nav-link {{ request()->routeIs('admin.officials.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Perangkat Desa
+            </a>
+            <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <i class="bi bi-gear"></i> Pengaturan Desa
+            </a>
             <a href="{{ route('home') }}" target="_blank" class="nav-link">
                 <i class="bi bi-box-arrow-up-right"></i> Lihat Website
             </a>

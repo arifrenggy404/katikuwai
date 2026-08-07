@@ -55,6 +55,8 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminPengaduanController;
+use App\Http\Controllers\Admin\AdminOfficialController;
+use App\Http\Controllers\Admin\AdminSettingController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -68,11 +70,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // News CRUD
         Route::resource('news', AdminNewsController::class);
 
+        // Perangkat Desa CRUD
+        Route::resource('officials', AdminOfficialController::class);
+
         // Pengaduan Management
         Route::get('/pengaduan', [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
         Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
         Route::patch('/pengaduan/{pengaduan}/status', [AdminPengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
         Route::delete('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+
+        // Settings Management
+        Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
     });
 });
 
