@@ -43,11 +43,13 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Configure custom php.ini settings for production (e.g. upload limits)
+# Configure custom php.ini settings for production (e.g. upload limits & realpath cache)
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 50M/g' "$PHP_INI_DIR/php.ini" \
     && sed -i 's/post_max_size = 8M/post_max_size = 50M/g' "$PHP_INI_DIR/php.ini" \
-    && sed -i 's/memory_limit = 128M/memory_limit = 256M/g' "$PHP_INI_DIR/php.ini"
+    && sed -i 's/memory_limit = 128M/memory_limit = 256M/g' "$PHP_INI_DIR/php.ini" \
+    && echo "realpath_cache_size = 4096k" >> "$PHP_INI_DIR/php.ini" \
+    && echo "realpath_cache_ttl = 600" >> "$PHP_INI_DIR/php.ini"
 
 # Enable OPcache for Laravel & Filament performance
 RUN docker-php-ext-enable opcache \
