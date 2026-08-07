@@ -8,34 +8,50 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         :root {
-            --sidebar-width: 250px;
+            --sidebar-width: 260px;
             --primary-green: #198754;
             --dark-bg: #1e293b;
         }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #f8fafc;
+            overflow-x: hidden;
         }
         #sidebar {
             width: var(--sidebar-width);
-            min-height: 100vh;
+            height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
             background: var(--dark-bg);
             color: #fff;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100;
-            transition: all 0.3s;
+            z-index: 1050;
+            transition: transform 0.3s ease, margin-left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        /* Custom scrollbar for sidebar */
+        #sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        #sidebar::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
         #sidebar .nav-link {
             color: #94a3b8;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 8px;
             margin: 4px 12px;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.2s;
         }
         #sidebar .nav-link:hover, #sidebar .nav-link.active {
             color: #fff;
@@ -44,12 +60,27 @@
         #main-content {
             margin-left: var(--sidebar-width);
             padding: 24px;
+            transition: margin-left 0.3s ease;
         }
         .navbar-top {
             background: #fff;
             border-bottom: 1px solid #e2e8f0;
             padding: 12px 24px;
             margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1040;
         }
         .card-dash {
             border: none;
@@ -60,17 +91,44 @@
         .card-dash:hover {
             transform: translateY(-2px);
         }
+
+        /* Mobile & Tablet Responsive Layout */
+        @media (max-width: 991.98px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            #sidebar.show {
+                transform: translateX(0);
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .navbar-top {
+                margin-left: 0;
+                padding: 12px 16px;
+            }
+            .sidebar-backdrop.show {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Backdrop for Mobile -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Sidebar Navbar -->
     <div id="sidebar">
-        <div class="p-3 text-center border-bottom border-secondary">
-            <h5 class="fw-bold mb-0 text-white"><i class="bi bi-shield-lock text-success me-2"></i>Admin Panel</h5>
-            <small class="text-muted">Desa Katikuwai</small>
+        <div class="p-3 text-center border-bottom border-secondary d-flex align-items-center justify-content-between">
+            <div class="text-start">
+                <h5 class="fw-bold mb-0 text-white"><i class="bi bi-shield-lock text-success me-2"></i>Admin Panel</h5>
+                <small class="text-muted">Desa Katikuwai</small>
+            </div>
+            <button class="btn btn-sm text-white-50 d-lg-none" id="closeSidebar"><i class="bi bi-x-lg fs-5"></i></button>
         </div>
-        <div class="py-3">
+        <div class="py-3 pb-5">
             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
@@ -122,11 +180,14 @@
 
     <!-- Topbar -->
     <div class="navbar-top d-flex justify-content-between align-items-center">
-        <div>
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-light border d-lg-none rounded-3" id="toggleSidebar">
+                <i class="bi bi-list fs-5"></i>
+            </button>
             <h5 class="mb-0 fw-bold text-dark">@yield('title', 'Dashboard')</h5>
         </div>
         <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small"><i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name ?? auth()->user()->email }}</span>
+            <span class="text-muted small d-none d-sm-inline"><i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name ?? auth()->user()->email }}</span>
         </div>
     </div>
 
@@ -150,5 +211,27 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const closeBtn = document.getElementById('closeSidebar');
+
+            function openSidebar() {
+                sidebar.classList.add('show');
+                backdrop.classList.add('show');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('show');
+                backdrop.classList.remove('show');
+            }
+
+            if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+            if (backdrop) backdrop.addEventListener('click', closeSidebar);
+        });
+    </script>
 </body>
 </html>

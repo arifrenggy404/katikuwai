@@ -65,6 +65,11 @@ use App\Http\Controllers\Admin\AdminPotensiController;
 use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 
+// Named route 'login' required by Laravel Auth Middleware for unauthenticated redirects
+Route::get('/login', function() {
+    return redirect()->route('admin.login');
+})->name('login');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
