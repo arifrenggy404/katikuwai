@@ -23,7 +23,15 @@
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Tanggal Kegiatan</label>
-                <input type="date" name="date" class="form-control" value="{{ old('date', $event->date) }}" required>
+                @php
+                    $formattedInputDate = '';
+                    if (!empty($event->date)) {
+                        $formattedInputDate = $event->date instanceof \DateTimeInterface 
+                            ? $event->date->format('Y-m-d') 
+                            : \Illuminate\Support\Carbon::parse($event->date)->format('Y-m-d');
+                    }
+                @endphp
+                <input type="date" name="date" class="form-control" value="{{ old('date', $formattedInputDate) }}" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Waktu / Jam</label>
