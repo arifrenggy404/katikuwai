@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->spa()
+            ->font('Inter', provider: \Filament\FontProviders\LocalFontProvider::class)
             ->darkMode(false)
 
             ->brandName('Admin Panel')
