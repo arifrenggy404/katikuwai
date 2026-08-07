@@ -52,12 +52,17 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
 
-            $view->with([
+            $viewData = [
                 'setting' => $setting,
                 'demographics' => $demographics,
                 'budgets' => $budgets,
-                'events' => $events,
-            ]);
+            ];
+
+            if (!$view->offsetExists('events')) {
+                $viewData['events'] = $events;
+            }
+
+            $view->with($viewData);
         });
     }
 }

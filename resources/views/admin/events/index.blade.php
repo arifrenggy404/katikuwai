@@ -25,7 +25,21 @@
                 @forelse($events as $item)
                     <tr>
                         <td class="fw-semibold">{{ $item->title }}</td>
-                        <td><span class="badge bg-primary">{{ $item->date ? \Carbon\Carbon::parse($item->date)->format('d M Y') : '-' }} ({{ $item->time }})</span></td>
+                        <td>
+                            @php
+                                $formattedDate = '-';
+                                if (!empty($item->date)) {
+                                    try {
+                                        $formattedDate = $item->date instanceof \DateTimeInterface 
+                                            ? $item->date->format('d M Y') 
+                                            : \Illuminate\Support\Carbon::parse($item->date)->format('d M Y');
+                                    } catch (\Throwable $e) {
+                                        $formattedDate = (string) $item->date;
+                                    }
+                                }
+                            @endphp
+                            <span class="badge bg-primary">{{ $formattedDate }} ({{ $item->time ?? '-' }})</span>
+                        </td>
                         <td>{{ $item->location }}</td>
                         <td class="text-center">
                             <a href="{{ route('admin.events.edit', $item->id) }}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
