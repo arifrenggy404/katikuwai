@@ -77,6 +77,9 @@
             <a href="{{ route('admin.news.index') }}" class="nav-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
                 <i class="bi bi-newspaper"></i> Berita Desa
             </a>
+            <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                <i class="bi bi-tags"></i> Kategori Berita
+            </a>
             <a href="{{ route('admin.pengaduan.index') }}" class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-dots"></i> Pengaduan
             </a>

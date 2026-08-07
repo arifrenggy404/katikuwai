@@ -60,6 +60,7 @@ use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminDokumenController;
 use App\Http\Controllers\Admin\AdminLetterRequestController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -72,6 +73,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // News CRUD
         Route::resource('news', AdminNewsController::class);
+
+        // Kategori Berita CRUD
+        Route::resource('categories', AdminCategoryController::class);
 
         // Perangkat Desa CRUD
         Route::resource('officials', AdminOfficialController::class);

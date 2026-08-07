@@ -18,6 +18,12 @@ if [ -z "$APP_KEY" ] && ! grep -q "APP_KEY=base64" /var/www/html/.env; then
     php artisan key:generate --force
 fi
 
+# Ensure framework storage directories exist and have correct permissions before running artisan commands
+echo "Fixing permissions for storage and bootstrap/cache..."
+mkdir -p /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/framework/cache /var/www/html/storage/logs
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+
 # Clear and cache configurations
 php artisan config:cache
 php artisan route:cache
