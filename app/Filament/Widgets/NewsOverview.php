@@ -8,7 +8,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class NewsOverview extends BaseWidget
 {
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
     protected int|string|array $columnSpan = 'full'; // Lebar penuh
 
     protected function getStats(): array
