@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Pagination\Paginator::useBootstrapFive();
+
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
             $setting = \Illuminate\Support\Facades\Cache::remember('view_setting', 3600, function () {
                 try {

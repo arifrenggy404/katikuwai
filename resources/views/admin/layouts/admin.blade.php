@@ -91,6 +91,12 @@
         .card-dash:hover {
             transform: translateY(-2px);
         }
+        /* Fix pagination arrow icon sizes */
+        .pagination svg, nav svg {
+            width: 1rem !important;
+            height: 1rem !important;
+            vertical-align: middle;
+        }
 
         /* Mobile & Tablet Responsive Layout */
         @media (max-width: 991.98px) {
