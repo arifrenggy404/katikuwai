@@ -83,8 +83,11 @@
             <a href="{{ route('admin.officials.index') }}" class="nav-link {{ request()->routeIs('admin.officials.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Perangkat Desa
             </a>
+            <a href="{{ route('admin.dokumen.index') }}" class="nav-link {{ request()->routeIs('admin.dokumen.*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-text"></i> Dokumen Publik
+            </a>
             <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i> Pengaturan Desa
+                <i class="bi bi-gear"></i> Pengaturan & Footer
             </a>
             <a href="{{ route('home') }}" target="_blank" class="nav-link">
                 <i class="bi bi-box-arrow-up-right"></i> Lihat Website

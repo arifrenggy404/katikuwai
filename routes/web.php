@@ -57,6 +57,7 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminPengaduanController;
 use App\Http\Controllers\Admin\AdminOfficialController;
 use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Admin\AdminDokumenController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -72,6 +73,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Perangkat Desa CRUD
         Route::resource('officials', AdminOfficialController::class);
+
+        // Dokumen Desa CRUD
+        Route::resource('dokumen', AdminDokumenController::class);
 
         // Pengaduan Management
         Route::get('/pengaduan', [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
