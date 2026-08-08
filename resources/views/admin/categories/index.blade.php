@@ -66,7 +66,7 @@
 
             <!-- Edit Modals (Placed outside table to prevent flickering) -->
             @foreach($categories as $item)
-                <div class="modal fade text-start" id="editModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal text-start" id="editModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <form action="{{ route('admin.categories.update', $item->id) }}" method="POST">

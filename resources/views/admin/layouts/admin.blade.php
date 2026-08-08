@@ -27,7 +27,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1050;
+            z-index: 1030;
             transition: transform 0.3s ease, margin-left 0.3s ease;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
@@ -70,7 +70,7 @@
             transition: margin-left 0.3s ease;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1020;
         }
         .sidebar-backdrop {
             display: none;
@@ -80,7 +80,7 @@
             width: 100vw;
             height: 100vh;
             background: rgba(0,0,0,0.5);
-            z-index: 1040;
+            z-index: 1025;
         }
         .card-dash {
             border: none;
@@ -96,6 +96,13 @@
             width: 1rem !important;
             height: 1rem !important;
             vertical-align: middle;
+        }
+        /* Ensure Bootstrap Modals render on top without flickering */
+        .modal {
+            z-index: 1065 !important;
+        }
+        .modal-backdrop {
+            z-index: 1060 !important;
         }
 
         /* Mobile & Tablet Responsive Layout */

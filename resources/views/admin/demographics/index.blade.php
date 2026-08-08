@@ -103,7 +103,7 @@
 
             <!-- Edit Modals (Placed outside table to prevent flickering) -->
             @foreach($demographics as $item)
-                <div class="modal fade text-start" id="editModalDemo{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal text-start" id="editModalDemo{{ $item->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <form action="{{ route('admin.demographics.update', $item->id) }}" method="POST">

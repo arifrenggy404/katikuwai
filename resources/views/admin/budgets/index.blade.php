@@ -121,7 +121,7 @@
 
             <!-- Edit Modals (Placed outside table to prevent flickering) -->
             @foreach($budgets as $item)
-                <div class="modal fade text-start" id="editModalBudget{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal text-start" id="editModalBudget{{ $item->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <form action="{{ route('admin.budgets.update', $item->id) }}" method="POST">
