@@ -108,48 +108,6 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                     </form>
-
-                                    <!-- Edit Modal -->
-                                    <div class="modal fade text-start" id="editModalBudget{{ $item->id }}" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form action="{{ route('admin.budgets.update', $item->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Edit Data Anggaran</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label class="form-label fw-semibold">Tahun Anggaran</label>
-                                                            <input type="number" name="year" class="form-control" value="{{ $item->year }}" min="2000" max="2100" required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label fw-semibold">Jenis Anggaran</label>
-                                                            <select name="type" class="form-select" required>
-                                                                <option value="pendapatan" {{ $item->type == 'pendapatan' ? 'selected' : '' }}>Pendapatan Desa</option>
-                                                                <option value="belanja" {{ $item->type == 'belanja' ? 'selected' : '' }}>Belanja Desa</option>
-                                                                <option value="pembiayaan" {{ $item->type == 'pembiayaan' ? 'selected' : '' }}>Pembiayaan Desa</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label fw-semibold">Kategori / Pos Anggaran</label>
-                                                            <input type="text" name="category" class="form-control" value="{{ $item->category }}" required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label fw-semibold">Nominal Anggaran (Rp)</label>
-                                                            <input type="number" step="0.01" name="amount" class="form-control" value="{{ $item->amount }}" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-success">Update Anggaran</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -160,6 +118,50 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Edit Modals (Placed outside table to prevent flickering) -->
+            @foreach($budgets as $item)
+                <div class="modal fade text-start" id="editModalBudget{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="{{ route('admin.budgets.update', $item->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">Edit Data Anggaran</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Tahun Anggaran</label>
+                                        <input type="number" name="year" class="form-control" value="{{ $item->year }}" min="2000" max="2100" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Jenis Anggaran</label>
+                                        <select name="type" class="form-select" required>
+                                            <option value="pendapatan" {{ $item->type == 'pendapatan' ? 'selected' : '' }}>Pendapatan Desa</option>
+                                            <option value="belanja" {{ $item->type == 'belanja' ? 'selected' : '' }}>Belanja Desa</option>
+                                            <option value="pembiayaan" {{ $item->type == 'pembiayaan' ? 'selected' : '' }}>Pembiayaan Desa</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Kategori / Pos Anggaran</label>
+                                        <input type="text" name="category" class="form-control" value="{{ $item->category }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Nominal Anggaran (Rp)</label>
+                                        <input type="number" step="0.01" name="amount" class="form-control" value="{{ $item->amount }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-success">Update Anggaran</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
 
             <div class="mt-3">
                 {{ $budgets->links() }}

@@ -53,33 +53,6 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                     </form>
-
-                                    <!-- Edit Modal -->
-                                    <div class="modal fade text-start" id="editModal{{ $item->id }}" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form action="{{ route('admin.categories.update', $item->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Edit Kategori</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label class="form-label fw-semibold">Nama Kategori</label>
-                                                            <input type="text" name="title" class="form-control" value="{{ $item->title }}" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-success">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </td>
                             </tr>
                         @empty
@@ -90,6 +63,34 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Edit Modals (Placed outside table to prevent flickering) -->
+            @foreach($categories as $item)
+                <div class="modal fade text-start" id="editModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="{{ route('admin.categories.update', $item->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">Edit Kategori</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Nama Kategori</label>
+                                        <input type="text" name="title" class="form-control" value="{{ $item->title }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
 
             <div class="mt-3">
                 {{ $categories->links() }}
