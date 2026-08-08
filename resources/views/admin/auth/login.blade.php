@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin | Desa Katikuwai</title>
+    <title>Login Admin | {{ $setting->desa_name ?? 'Desa Katikuwai' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
@@ -41,7 +41,7 @@
 
 <div class="login-card text-center">
     <h4 class="fw-bold text-dark mb-1"><i class="bi bi-shield-lock text-success me-2"></i>Login Admin</h4>
-    <p class="text-muted small">Sistem Informasi Desa Katikuwai</p>
+    <p class="text-muted small">Sistem Informasi {{ $setting->desa_name ?? 'Desa Katikuwai' }}</p>
 
     <hr class="my-4 text-muted">
 

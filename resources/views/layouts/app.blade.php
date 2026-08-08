@@ -18,7 +18,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ ($setting && $setting->desa_logo) ? asset('storage/' . $setting->desa_logo) : asset('favicon.ico') }}" type="image/x-icon">
-    <title>@yield('title', 'Website Desa')</title>
+    <title>@yield('title', 'Website Resmi') - {{ $setting->desa_name ?? 'Desa Katikuwai' }}</title>
     @vite('resources/css/app.css')
 </head>
 

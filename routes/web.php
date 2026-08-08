@@ -64,6 +64,8 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminPotensiController;
 use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminGalleryController;
+use App\Http\Controllers\Admin\AdminBudgetController;
+use App\Http\Controllers\Admin\AdminDemographicController;
 
 // Named route 'login' required by Laravel Auth Middleware for unauthenticated redirects
 Route::get('/login', function() {
@@ -91,6 +93,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/banners/home/{homeBanner}', [AdminBannerController::class, 'destroyHomeBanner'])->name('banners.home.destroy');
         Route::post('/banners/news', [AdminBannerController::class, 'storeNewsBanner'])->name('banners.news.store');
         Route::delete('/banners/news/{banner}', [AdminBannerController::class, 'destroyNewsBanner'])->name('banners.news.destroy');
+
+        // Dana Desa / APBDes CRUD
+        Route::resource('budgets', AdminBudgetController::class);
+
+        // Data Statistik / Demografi CRUD
+        Route::resource('demographics', AdminDemographicController::class);
 
         // Gallery Albums & Photos CRUD
         Route::resource('gallery', AdminGalleryController::class);

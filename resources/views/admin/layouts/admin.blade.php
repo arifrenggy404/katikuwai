@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel') - Desa Katikuwai</title>
+    <title>@yield('title', 'Admin Panel') - {{ $setting->desa_name ?? 'Desa Katikuwai' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
@@ -130,7 +130,7 @@
         <div class="p-3 text-center border-bottom border-secondary d-flex align-items-center justify-content-between">
             <div class="text-start">
                 <h5 class="fw-bold mb-0 text-white"><i class="bi bi-shield-lock text-success me-2"></i>Admin Panel</h5>
-                <small class="text-muted">Desa Katikuwai</small>
+                <small class="text-muted">{{ $setting->desa_name ?? 'Desa Katikuwai' }}</small>
             </div>
             <button class="btn btn-sm text-white-50 d-lg-none" id="closeSidebar"><i class="bi bi-x-lg fs-5"></i></button>
         </div>
@@ -146,6 +146,12 @@
             </a>
             <a href="{{ route('admin.banners.index') }}" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
                 <i class="bi bi-images"></i> Banner Web
+            </a>
+            <a href="{{ route('admin.budgets.index') }}" class="nav-link {{ request()->routeIs('admin.budgets.*') ? 'active' : '' }}">
+                <i class="bi bi-wallet2"></i> Dana Desa (APBDes)
+            </a>
+            <a href="{{ route('admin.demographics.index') }}" class="nav-link {{ request()->routeIs('admin.demographics.*') ? 'active' : '' }}">
+                <i class="bi bi-pie-chart"></i> Data Statistik
             </a>
             <a href="{{ route('admin.pengaduan.index') }}" class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-dots"></i> Pengaduan
