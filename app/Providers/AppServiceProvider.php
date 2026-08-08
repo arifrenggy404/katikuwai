@@ -56,9 +56,15 @@ class AppServiceProvider extends ServiceProvider
 
             $viewData = [
                 'setting' => $setting,
-                'demographics' => $demographics,
-                'budgets' => $budgets,
             ];
+
+            if (!$view->offsetExists('demographics')) {
+                $viewData['demographics'] = $demographics;
+            }
+
+            if (!$view->offsetExists('budgets')) {
+                $viewData['budgets'] = $budgets;
+            }
 
             if (!$view->offsetExists('events')) {
                 $viewData['events'] = $events;
