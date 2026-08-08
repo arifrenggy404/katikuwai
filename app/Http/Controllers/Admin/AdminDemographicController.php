@@ -36,17 +36,21 @@ class AdminDemographicController extends Controller
         ]);
 
         Demographic::create($validated);
+        \Illuminate\Support\Facades\Cache::forget('view_demographics');
 
         return redirect()->route('admin.demographics.index')->with('success', 'Data statistik / demografi berhasil ditambahkan!');
     }
 
-    public function edit(Demographic $demographic)
+    public function edit($id)
     {
+        $demographic = Demographic::findOrFail($id);
         return view('admin.demographics.edit', compact('demographic'));
     }
 
-    public function update(Request $request, Demographic $demographic)
+    public function update(Request $request, $id)
     {
+        $demographic = Demographic::findOrFail($id);
+
         $validated = $request->validate([
             'category' => 'required|string|max:255',
             'label' => 'required|string|max:255',
@@ -54,13 +58,17 @@ class AdminDemographicController extends Controller
         ]);
 
         $demographic->update($validated);
+        \Illuminate\Support\Facades\Cache::forget('view_demographics');
 
         return redirect()->route('admin.demographics.index')->with('success', 'Data statistik / demografi berhasil diperbarui!');
     }
 
-    public function destroy(Demographic $demographic)
+    public function destroy($id)
     {
+        $demographic = Demographic::findOrFail($id);
         $demographic->delete();
+        \Illuminate\Support\Facades\Cache::forget('view_demographics');
+
         return redirect()->route('admin.demographics.index')->with('success', 'Data statistik / demografi berhasil dihapus!');
     }
 }
