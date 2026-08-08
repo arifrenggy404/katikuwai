@@ -24,7 +24,7 @@ class AdminDemographicController extends Controller
 
     public function create()
     {
-        return view('admin.demographics.create');
+        return redirect()->route('admin.demographics.index');
     }
 
     public function store(Request $request)
@@ -43,8 +43,7 @@ class AdminDemographicController extends Controller
 
     public function edit($demographic)
     {
-        $demographic = $demographic instanceof Demographic ? $demographic : Demographic::findOrFail($demographic);
-        return view('admin.demographics.edit', compact('demographic'));
+        return redirect()->route('admin.demographics.index');
     }
 
     public function update(Request $request, $demographic)

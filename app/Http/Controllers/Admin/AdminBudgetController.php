@@ -28,7 +28,7 @@ class AdminBudgetController extends Controller
 
     public function create()
     {
-        return view('admin.budgets.create');
+        return redirect()->route('admin.budgets.index');
     }
 
     public function store(Request $request)
@@ -48,8 +48,7 @@ class AdminBudgetController extends Controller
 
     public function edit($budget)
     {
-        $budget = $budget instanceof Budget ? $budget : Budget::findOrFail($budget);
-        return view('admin.budgets.edit', compact('budget'));
+        return redirect()->route('admin.budgets.index');
     }
 
     public function update(Request $request, $budget)
