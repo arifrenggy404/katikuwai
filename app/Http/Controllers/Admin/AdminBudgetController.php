@@ -46,13 +46,16 @@ class AdminBudgetController extends Controller
         return redirect()->route('admin.budgets.index')->with('success', 'Data Dana Desa / APBDes berhasil ditambahkan!');
     }
 
-    public function edit(Budget $budget)
+    public function edit($budget)
     {
+        $budget = $budget instanceof Budget ? $budget : Budget::findOrFail($budget);
         return view('admin.budgets.edit', compact('budget'));
     }
 
-    public function update(Request $request, Budget $budget)
+    public function update(Request $request, $budget)
     {
+        $budget = $budget instanceof Budget ? $budget : Budget::findOrFail($budget);
+
         $validated = $request->validate([
             'year' => 'required|integer|min:2000|max:2100',
             'type' => 'required|string|in:pendapatan,belanja,pembiayaan',
@@ -66,8 +69,9 @@ class AdminBudgetController extends Controller
         return redirect()->route('admin.budgets.index')->with('success', 'Data Dana Desa / APBDes berhasil diperbarui!');
     }
 
-    public function destroy(Budget $budget)
+    public function destroy($budget)
     {
+        $budget = $budget instanceof Budget ? $budget : Budget::findOrFail($budget);
         $budget->delete();
         \Illuminate\Support\Facades\Cache::forget('view_budgets');
 
